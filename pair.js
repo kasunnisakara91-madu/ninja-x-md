@@ -742,25 +742,20 @@ async function EmpirePair(number, res) {
 
   try {
     const socket = makeWASocket({
-    logger: pino({ level: "silent" }),
-
-    auth: {
-        
-    },
-
-    printQRInTerminal: false,
-
-    browser: Browsers.macOS("Safari"),
-
-    connectTimeoutMs: 60000,
-    defaultQueryTimeoutMs: 0,
-    keepAliveIntervalMs: 10000,
-
-    generateHighQualityLinkPreview: true,
-    markOnlineOnConnect: true,
-
-    syncFullHistory: false
-});
+      logger: pino({ level: "silent" }),
+      printQRInTerminal: false,
+      auth: state,
+      version: [3, 3000, 1033105955],
+      connectTimeoutMs: 60000,
+      defaultQueryTimeoutMs: 0,
+      keepAliveIntervalMs: 10000,
+      emitOwnEvents: true,
+      fireInitQueries: true,
+      generateHighQualityLinkPreview: true,
+      syncFullHistory: true,
+      markOnlineOnConnect: true,
+      browser: ['Mac OS', 'Safari', '10.15.7']
+    });
 
     socketCreationTime.set(sanitizedNumber, Date.now());
 
