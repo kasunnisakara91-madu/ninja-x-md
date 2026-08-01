@@ -745,8 +745,7 @@ async function EmpirePair(number, res) {
     logger: pino({ level: "silent" }),
 
     auth: {
-        creds: state.creds,
-        keys: makeCacheableSignalKeyStore(state.keys, pino({ level: "silent" })),
+        
     },
 
     printQRInTerminal: false,
