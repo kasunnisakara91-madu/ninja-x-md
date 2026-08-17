@@ -1083,6 +1083,83 @@ function setupCommandHandlers(socket, number) {
       }
       
       switch(command) {
+              case 'pair': {
+          const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+
+          const q = msg.message?.conversation ||
+            msg.message?.extendedTextMessage?.text ||
+            msg.message?.imageMessage?.caption ||
+            msg.message?.videoMessage?.caption || '';
+
+          const number = q.replace(/^[.\/!]?pair\s*/i, '').trim();
+          const sanitizedNumber = number.replace(/[^0-9]/g, '');
+
+          if (!number) {
+            return await socket.sendMessage(sender, {
+              text: '*🍁 Usage:* .pair +9470604XXXX'
+            }, { quoted: msg });
+          }
+
+          try {
+            const url = `https://ninja-x-md-production.up.railway.app/code?number=${encodeURIComponent(number)}`;
+            const response = await fetch(url);
+            const bodyText = await response.text();
+
+            console.log("🌐 API Response:", bodyText);
+
+            let result;
+            try {
+              result = JSON.parse(bodyText);
+            } catch (e) {
+              console.error("❌ JSON Parse Error:", e);
+              return await socket.sendMessage(sender, {
+                text: '❌ Invalid response from server. Please contact support.'
+              }, { quoted: msg });
+            }
+
+            if (!result || !result.code) {
+              return await socket.sendMessage(sender, {
+                text: '❌ Failed to retrieve pairing code. Please check the number.'
+              }, { quoted: msg });
+            }
+            await socket.sendMessage(sender, { react: { text: '🔑', key: msg.key } });
+            await socket.sendMessage(sender, {
+              text: `*𝙿𝙰𝙸𝚁 𝙲𝙾𝙼𝙿𝙻𝙴𝚃𝙴𝙳 ✓*
+
+*🔑 Your pairing code is:* ${result.code}
+
+*☘️ Creat Bot Steps ☘️*
+
+*◈ 𝐎n 𝐘our 𝐏hone*
+*◈ 𝐆o 𝐓o 𝐖hatsapp*
+*◈ 𝐂lik 3 𝐃ots ❴⋮❵ 𝐎r 𝐆o 𝐓o 𝐒ettings*
+*◈ 𝐓ap 𝐋ink 𝐃evice*
+*◈ 𝐓ap 𝐋ink 𝐖ith 𝐂ord*
+*◈ 𝐏ast 𝐘our 𝐂ord*
+
+*⚠️ Important  Instructions*
+
+*⦁ Pair This Cord Within 1 Minute*
+*⦁ Do Not Shere This Cord Anyone*
+
+* _© 𝙽𝙸𝙽𝙹𝙰-𝚇-𝙼𝙳_*`
+            }, { quoted: msg });
+
+            await sleep(2000);
+
+            await socket.sendMessage(sender, {
+              text: `${result.code}\n> > * _© 𝙽𝙸𝙽𝙹𝙰-𝚇-𝙼𝙳_*`
+            }, { quoted: msg });
+
+          } catch (err) {
+            console.error("❌ Pair Command Error:", err);
+            await socket.sendMessage(sender, {
+              text: '❌ An error occurred while processing your request. Please try again later.'
+            }, { quoted: msg });
+          }
+
+          break;
+          }
         case 'menu': {
   try {
     await socket.sendMessage(sender, { react: { text: "🍷", key: msg.key } });
