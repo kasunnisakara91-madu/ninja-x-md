@@ -1336,7 +1336,7 @@ case 'bs': {
             text: `*❪ SYSTEM ERROR ❫*\n\n❌ *System Error!*\n🚫 _${error.message || 'Unknown error'}_\n\n🔄 _Please try again later..._${DEFAULT_FOOTER}`
         }, { quoted: msg });
     }
-});
+}
               case 'sinhalacartoons':             
 case 'cartoon': {
     const DEFAULT_FOOTER = `\n\n> 🧚‍♂️ DCT NINJA X MD 🧚‍♂️\n> 🧬 ᴘᴏᴡᴇʀᴇᴅ ʙʏ 𝙳𝙲𝚃 𝙽𝙸𝙽𝙹𝙰 𝚇 𝙼𝙳`;
